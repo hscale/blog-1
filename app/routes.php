@@ -16,4 +16,7 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::get('/test', array('uses' => 'HomeController@test'));
+Route::get('/index', array('uses' => 'TestsController@index'));
+Route::get('/create', array('uses' => 'TestsController@create'));
+Route::get('/view/{id}', array('uses' => 'TestsController@show'));
+Route::get('/delete/{id}', array('uses' => 'TestsController@destroy'));
