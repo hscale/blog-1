@@ -20,11 +20,12 @@ class TestsController extends \BaseController {
 	 */
 	public function create()
 	{
+        // Just hard coding some arbitrary value for now...
         $test = new Test;
-        $test->id = 2;
+        $test->email = 'someone@test.com';
 
         if($test->save()) {
-            return 'inserted new record';
+            return 'Saved.';
         }
 	}
 
@@ -39,11 +40,10 @@ class TestsController extends \BaseController {
         $result = Test::find($id);
 
         if ($result) {
-            return $result;
+            return $result->toArray();
         } else {
-            return 'Not found.';
+            return 'Resource not found, check id.';
         }
-
 	}
 
 	/**
@@ -54,7 +54,15 @@ class TestsController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+        $data = Test::find($id);
+
+        if (!$data) {
+            return 'Resource not found, check id.';
+        }
+
+        $data = $data->toArray();
+
+        return View::make('tests.update')->with('data', $data);
 	}
 
 	/**
@@ -65,7 +73,15 @@ class TestsController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+        $test = Test::find($id);
+        $email = Input::get('email');
+        $test->email = $email;
+
+        if ($test->save()) {
+            return $test->toArray();
+        } else {
+            return 'Error, not saved.';
+        }
 	}
 
 	/**
@@ -76,13 +92,14 @@ class TestsController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$test = Test::find($id);
+        $test = Test::find($id);
 
         if($test) {
-            $test->delete();
-        } else {
-            return 'Not found.';
+            if($test->delete()) {
+                return 'Deleted.';
+            } else {
+                return 'Error saving.';
+            }
         }
 	}
-
 }
