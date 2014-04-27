@@ -1,0 +1,1 @@
+/vagrant/blog/app/views/lessons/index.blade.php
